@@ -1,0 +1,5 @@
+# Created at 2025-06-04T22:40:57.574
+Boot Manifest-JAR contains absolute paths in classpath 'E:\Java\Proyectos SpringBoot\Hazelcast_cache\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
