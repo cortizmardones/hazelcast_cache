@@ -1,7 +1,0 @@
-com\example\demo\dto\PokemonResponse.class
-com\example\demo\service\PokemonService.class
-com\example\demo\controller\PokemonController.class
-com\example\demo\feign\PokemonClient.class
-com\example\demo\ClasePrincipal.class
-com\example\demo\configuration\HazelcastConfiguration.class
-com\example\demo\service\PokemonServiceImpl.class

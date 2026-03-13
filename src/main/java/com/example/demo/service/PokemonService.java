@@ -4,6 +4,6 @@ import com.example.demo.dto.PokemonResponse;
 
 public interface PokemonService {
 
-    PokemonResponse getPokemon(String name);
+    PokemonResponse getPokemon(String pokemonName);
 
 }

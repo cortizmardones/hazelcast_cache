@@ -12,8 +12,10 @@ public class HazelcastConfiguration {
     public Config hazelcastConfig() {
         return new Config()
                 .addMapConfig(new MapConfig()
-                        .setName("pokemon")
-                        .setTimeToLiveSeconds(20));
+                        // NAME CACHÉ
+                        .setName("cacheServicePokeApi")
+                        // TTL TIME-TO-LIVE DEL CACHÉ
+                        .setTimeToLiveSeconds(60));
     }
 
 }
