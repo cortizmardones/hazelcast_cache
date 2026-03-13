@@ -145,6 +145,86 @@ Spring devolverá el valor cacheado y no ejecutará nuevamente la llamada real.
 
 ---
 
+## 🗄️ Configuración de Hazelcast
+
+El proyecto define una configuración explícita de Hazelcast para controlar el comportamiento de la caché utilizada por Spring Cache.
+
+### Clase de configuración
+
+```java
+import com.hazelcast.config.Config;
+import com.hazelcast.config.MapConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class HazelcastConfiguration {
+
+    @Bean
+    public Config hazelcastConfig() {
+        return new Config()
+                .addMapConfig(new MapConfig()
+                        // NAME CACHÉ
+                        .setName("cacheServicePokeApi")
+                        // TTL TIME-TO-LIVE DEL CACHÉ
+                        .setTimeToLiveSeconds(60));
+    }
+
+}
+```
+
+### ¿Qué hace esta configuración?
+
+Esta clase registra un bean de tipo `Config` que inicializa Hazelcast y define la configuración del mapa que será usado como caché.
+
+En este caso se configura una caché llamada:
+
+```text
+cacheServicePokeApi
+```
+
+Ese nombre coincide con el utilizado en la anotación:
+
+```java
+@Cacheable(cacheNames = "cacheServicePokeApi")
+```
+
+Gracias a eso, Spring Cache sabe qué espacio de caché debe utilizar para almacenar y recuperar las respuestas.
+
+### TTL configurado
+
+La propiedad:
+
+```java
+.setTimeToLiveSeconds(60)
+```
+
+indica que cada entrada almacenada en la caché vivirá durante **60 segundos**.
+
+Esto significa que:
+
+- la primera consulta guarda el resultado en Hazelcast
+- durante 60 segundos, nuevas consultas con la misma clave se responderán desde caché
+- una vez vencido ese tiempo, la entrada expirará
+- la siguiente consulta volverá a ejecutar la llamada real a PokeAPI
+
+### Beneficio de esta configuración
+
+Definir un `TTL` permite evitar que la información permanezca indefinidamente en memoria y ayuda a mantener un equilibrio entre:
+
+- velocidad de respuesta
+- reducción de llamadas externas
+- actualización periódica de la información cacheada
+
+### Resumen
+
+- se crea una caché llamada `cacheServicePokeApi`
+- esa caché tiene una duración de `60 segundos`
+- después del vencimiento, Hazelcast elimina la entrada
+- la próxima consulta vuelve a invocar la API externa y renueva la caché
+
+---
+
 ## 🚀 Endpoint disponible
 
 ### Consultar un Pokémon por nombre
